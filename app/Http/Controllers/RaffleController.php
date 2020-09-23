@@ -40,21 +40,28 @@ class RaffleController extends Controller
      */
     public function store(Request $request)
     {
-
         if(!DB::table('raffles_inscriptions')->where('email', $request->email)->first()){
+
             DB::table('raffles_inscriptions')->insert([
                 'raffle_id' => $request->raffle_id,
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'email' => $request->email
             ]);
+
             Mail::to($request->email)->send(new RaffleValidation($request->firstname, $request->lastname, $request->email));
 
-            return redirect()->back()->with('success', 'Le produit est ajouté');
+            return redirect()->back()->with('success', 'Vous êtes bien inscrit sur la raffle ! Merci');
         }
 
         return redirect()->back()->with('error', 'Vous êtes déjà inscrit dans la raffle !');
         
+    }
+
+    public function lunch(Request $request, $id){
+        $allEmail = DB::table('raffles_inscriptions')->where('raffle_id', $id)->pluck('email')->toArray();
+        $productNbr = Raffle::find($id)->product()->pluck('quantity')->first();
+        return redirect()->back()->with('success', 'Raffle lancée !');
     }
 
     /**

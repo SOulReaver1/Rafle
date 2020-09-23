@@ -19,11 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::resource('/raffle', RaffleController::class)->only([
+    'index', 'store'
+]);
 
-Route::resource('/raffle', RaffleController::class);
+Route::post('/raffle/lunch/{id}', [RaffleController::class, 'lunch'])->name('raffles.lunch');
 
 Route::middleware(['auth:sanctum', 'verified'])->group( function () {
 

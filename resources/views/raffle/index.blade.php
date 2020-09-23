@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="col-lg-7 mx-auto relative mt--7">
+    <form action="{{route('raffles.lunch', $raffles->first()->pluck('id')->first())}}" method="post">
+        {{ csrf_field() }}
+        <button type="submit" class="btn btn-primary">Faire le tirage au sort</button>
+    </form>
 <div class="row">
     <div class="col mb-5 mb-xl-0">
         <div id="carouselExampleControls" class="carousel slide form-group" data-ride="carousel">

@@ -30,7 +30,6 @@
       <li>Contact</li>
     </ul>
   </div>
-
     @yield('content')
 </div>
 </body>
