@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('demo', RaffleController::class);
+Route::resource('/raffle', RaffleController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->group( function () {
 

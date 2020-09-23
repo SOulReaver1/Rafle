@@ -16,7 +16,8 @@ class RaffleController extends Controller
      */
     public function index()
     {
-        return view('raffle.index');
+        $raffles = Raffle::all();
+        return view('raffle.index', ['raffles' => $raffles]);
     }
 
     /**
