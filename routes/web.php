@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RafleController;
+use App\Http\Controllers\RaffleController;
+use App\Http\Controllers\ProductsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/demo', RafleController::class);
+Route::resource('demo', RaffleController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->group( function () {
+
+    Route::resource('products', ProductsController::class);
+
     Route::get('/dashboard', function(){
         return view('dashboard');
     })->name('dashboard');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
