@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Raffle;
 use Illuminate\Http\Request;
 use App\Models\Products;
-use Livewire\WithFileUploads;
+use App\Mail\RaffleValidation;
+use Illuminate\Support\Facades\Mail;
+use DB;
 
 class RaffleController extends Controller
 {
@@ -16,7 +18,8 @@ class RaffleController extends Controller
      */
     public function index()
     {
-        return view('raffle.index');
+        $raffles = Raffle::all();
+        return view('raffle.index', ['raffles' => $raffles]);
     }
 
     /**
@@ -38,16 +41,20 @@ class RaffleController extends Controller
     public function store(Request $request)
     {
 
-        // $product = new Products;
-        // $product->name = 'Jordan X Many Price Best Ever Seen';
-        // $product->price = 150;
-        // $product->quantity = 2;
-        // $product->save();
+        if(!DB::table('raffles_inscriptions')->where('email', $request->email)->first()){
+            DB::table('raffles_inscriptions')->insert([
+                'raffle_id' => $request->raffle_id,
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'email' => $request->email
+            ]);
+            Mail::to($request->email)->send(new RaffleValidation($request->firstname, $request->lastname, $request->email));
 
-        // $product->raffle()->create(['name' => 'Ilan']);
+            return redirect()->back()->with('success', 'Le produit est ajouté');
+        }
 
-
-        return redirect()->back()->with('success', 'Le produit est ajouté');
+        return redirect()->back()->with('error', 'Vous êtes déjà inscrit dans la raffle !');
+        
     }
 
     /**

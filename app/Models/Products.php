@@ -14,4 +14,5 @@ class Products extends Model
     public function raffle(){
         return $this->hasOne('App\Models\Raffle', 'product_id');
     }
+
 }
