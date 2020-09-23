@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/about', function () {
+    return view('about');
+});
+
 Route::resource('/raffle', RaffleController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->group( function () {
